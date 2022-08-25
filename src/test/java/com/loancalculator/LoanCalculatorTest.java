@@ -21,7 +21,7 @@ class LoanCalculatorTest {
     void calculateTest() {
         LoanCalculation TEST_DATA = ImmutableLoanCalculation.builder()
                 .amount(20000D)
-                .numberOfMounts(60L)
+                .numberOfMonths(60L)
                 .annualInterestPercent(5d)
                 .build();
 
@@ -29,7 +29,7 @@ class LoanCalculatorTest {
 
         LoanCalculation savedCalculation = loanCalculationService.save(TEST_DATA);
 
-        Assertions.assertEquals(savedCalculation.getPaymentPerMount(),377.42d);
+        Assertions.assertEquals(savedCalculation.getPaymentPerMonth(),377.42d);
         Assertions.assertEquals(currentNumberOfEntities+1,loanCalculationRepository.findAll().size());
     }
 

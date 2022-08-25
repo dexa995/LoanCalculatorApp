@@ -18,12 +18,12 @@ public interface LoanCalculation {
 
     Double getAnnualInterestPercent();
 
-    Long getNumberOfMounts();
+    Long getNumberOfMonths();
 
     @Value.Lazy
-    default Double getPaymentPerMount() {
+    default Double getPaymentPerMonth() {
         Double interestRatePerMonth = getAnnualInterestPercent() / 100 / 12;
-        double pow = Math.pow((1 + interestRatePerMonth), getNumberOfMounts());
+        double pow = Math.pow((1 + interestRatePerMonth), getNumberOfMonths());
         double a = getAmount() * interestRatePerMonth * pow;
         double b = pow - 1;
         return BigDecimal.valueOf(a / b).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -31,18 +31,18 @@ public interface LoanCalculation {
 
     @Value.Lazy
     default List<PaymentInstruction> getPaymentInstruction() {
-       return IntStream.rangeClosed(1, getNumberOfMounts().intValue())
+       return IntStream.rangeClosed(1, getNumberOfMonths().intValue())
                 .mapToObj(value -> ImmutablePaymentInstruction.builder()
-                        .payment(getPaymentPerMount())
-                        .mount(value)
+                        .payment(getPaymentPerMonth())
+                        .month(value)
                         .build())
                 .collect(Collectors.toList());
     }
 
     @Value.Check
     default void check() {
-        if (getNumberOfMounts() <= 0) {
-            throw new IllegalArgumentException("Number of mounts must be greater then 0");
+        if (getNumberOfMonths() <= 0) {
+            throw new IllegalArgumentException("Number of months must be greater then 0");
         }
         if (getAnnualInterestPercent() <= 0) {
             throw new IllegalArgumentException("Annual interest percent must be greater then 0");
@@ -53,7 +53,7 @@ public interface LoanCalculation {
     @JsonSerialize(as = ImmutablePaymentInstruction.class)
     @JsonDeserialize(as = ImmutablePaymentInstruction.class)
     interface PaymentInstruction {
-        Integer getMount();
+        Integer getMonth();
 
         Double getPayment();
     }

@@ -25,11 +25,11 @@ public class LoanCalculationEntity {
     private Double annualInterestPercent;
 
 
-    @Column(name = "NUMBER_OD_MOUNTS",nullable = false)
-    private Long numberOfMounts;
+    @Column(name = "NUMBER_OF_MONTHS",nullable = false)
+    private Long numberOfMonths;
 
-    @Column(name = "PAYMENT_PER_MOUNT",nullable = false)
-    private Double paymentPerMount;
+    @Column(name = "PAYMENT_PER_MONTH",nullable = false)
+    private Double paymentPerMonth;
 
     @Column(name = "DATE_CREATED", nullable = false)
     @CreatedDate
@@ -41,8 +41,8 @@ public class LoanCalculationEntity {
     public LoanCalculationEntity(LoanCalculation loanCalculation) {
         this.amount = loanCalculation.getAmount();
         this.annualInterestPercent = loanCalculation.getAnnualInterestPercent();
-        this.numberOfMounts = loanCalculation.getNumberOfMounts();
-        this.paymentPerMount = loanCalculation.getPaymentPerMount();
+        this.numberOfMonths = loanCalculation.getNumberOfMonths();
+        this.paymentPerMonth = loanCalculation.getPaymentPerMonth();
     }
 
 
@@ -50,7 +50,7 @@ public class LoanCalculationEntity {
         return ImmutableLoanCalculation.builder()
                 .amount(amount)
                 .annualInterestPercent(annualInterestPercent)
-                .numberOfMounts(numberOfMounts)
+                .numberOfMonths(numberOfMonths)
                 .build();
     }
 }
